@@ -1,4 +1,4 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateDirectoreDto } from './dto/create-directore.dto';
 import { UpdateDirectoreDto } from './dto/update-directore.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,7 +14,13 @@ export class DirectoresService {
 
   async create(createDirectoreDto: CreateDirectoreDto) {
     try {
-      const director = this.directorRepository.create(createDirectoreDto);
+      // Crear una copia del DTO
+      const directorData = { ...createDirectoreDto };
+
+      // Convertir la fecha de nacimiento de string a Date en la copia
+      directorData.fechaNacimiento = new Date(createDirectoreDto.fechaNacimiento);
+
+      const director = this.directorRepository.create(directorData);
       await this.directorRepository.save(director);
       const {nombre, fechaNacimiento} = director;
       return {director: {nombre, fechaNacimiento}};
@@ -23,6 +29,8 @@ export class DirectoresService {
       throw new BadRequestException(err.detail);
     }
   }
+
+
 
   async findAll() {
     return await this.directorRepository.find();
