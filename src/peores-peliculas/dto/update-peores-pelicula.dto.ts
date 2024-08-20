@@ -1,4 +1,23 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreatePeoresPeliculaDto } from './create-peores-pelicula.dto';
+import { IsString, IsOptional, IsNumber } from 'class-validator';
 
-export class UpdatePeoresPeliculaDto extends PartialType(CreatePeoresPeliculaDto) {}
+export class UpdatePeoresPeliculaDto {
+    @IsString()
+    @IsOptional()
+    titulo?: string;
+
+    @IsNumber()
+    @IsOptional()
+    añoLanzamiento?: number;
+
+    @IsString()
+    @IsOptional()
+    genero?: string;
+
+    @IsString()
+    @IsOptional()
+    descripcion?: string;
+
+    @IsNumber()
+    @IsOptional()
+    directorId?: number;
+}

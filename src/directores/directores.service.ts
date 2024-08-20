@@ -1,6 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {BadRequestException, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateDirectoreDto } from './dto/create-directore.dto';
-import { UpdateDirectoreDto } from './dto/update-directore.dto';
+import {UpdateDirectoreDto} from './dto/update-directore.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Director } from './entities/directore.entity';
@@ -20,6 +20,7 @@ export class DirectoresService {
       // Convertir la fecha de nacimiento de string a Date en la copia
       directorData.fechaNacimiento = new Date(createDirectoreDto.fechaNacimiento);
 
+      // Crear un nuevo director con los datos modificados
       const director = this.directorRepository.create(directorData);
       await this.directorRepository.save(director);
       const {nombre, fechaNacimiento} = director;
@@ -40,9 +41,12 @@ export class DirectoresService {
     return await this.directorRepository.findOne({ where: { id } });
   }
 
-  async update(id: number, updateDirectoreDto: UpdateDirectoreDto) {
-    await this.directorRepository.update(id, updateDirectoreDto);
-    return await this.directorRepository.findOne({ where: { id } });
+  async update(id: number, updateDirectorDto: UpdateDirectoreDto) {
+    const director = await this.directorRepository.preload({ id, ...updateDirectorDto });
+    if (!director) {
+      throw new NotFoundException(`Director with ID ${id} not found`);
+    }
+    return this.directorRepository.save(director);
   }
 
   async remove(id: number) {

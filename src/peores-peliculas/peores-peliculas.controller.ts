@@ -32,4 +32,9 @@ export class PeoresPeliculasController {
   remove(@Param('id') id: number): Promise<void> {
     return this.worstMoviesService.remove(id);
   }
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() updatePeoresPeliculaDto: UpdatePeoresPeliculaDto) {
+    return this.worstMoviesService.update(+id, updatePeoresPeliculaDto);
+  }
 }

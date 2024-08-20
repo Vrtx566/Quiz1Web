@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { PeoresPeliculas } from './entities/peores-pelicula.entity';
 import { Director } from '../directores/entities/directore.entity';
 import {CreatePeoresPeliculaDto} from "./dto/create-peores-pelicula.dto";
+import {UpdatePeoresPeliculaDto} from "./dto/update-peores-pelicula.dto";
 
 @Injectable()
 export class PeoresPeliculasService {
@@ -49,6 +50,17 @@ export class PeoresPeliculasService {
   }
   async remove(id: number): Promise<void> {
     await this.worstMoviesRepository.delete(id);
+  }
+
+  async update(id: number, updatePeoresPeliculaDto: UpdatePeoresPeliculaDto) {
+    const pelicula = await this.worstMoviesRepository.findOne({ where: { id: id } });
+    if (!pelicula) {
+      throw new NotFoundException(`Peor Película with ID ${id} not found`);
+    }
+
+    Object.assign(pelicula, updatePeoresPeliculaDto);
+
+    return this.worstMoviesRepository.save(pelicula);
   }
 
 }

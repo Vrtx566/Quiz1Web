@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { Director } from 'src/directores/entities/directore.entity';
 @Entity()
 export class PeoresPeliculas {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column()

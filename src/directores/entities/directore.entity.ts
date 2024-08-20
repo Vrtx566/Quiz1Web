@@ -3,7 +3,7 @@ import { PeoresPeliculas } from 'src/peores-peliculas/entities/peores-pelicula.e
 
 @Entity()
 export class Director {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number;
 
     @Column()

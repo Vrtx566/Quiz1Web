@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, Put} from '@nestjs/common';
 import { DirectoresService } from './directores.service';
 import { CreateDirectoreDto } from './dto/create-directore.dto';
-import { UpdateDirectoreDto } from './dto/update-directore.dto';
+import {UpdateDirectoreDto} from './dto/update-directore.dto';
 
 @Controller('directores')
 export class DirectoresController {
@@ -31,4 +31,5 @@ export class DirectoresController {
   remove(@Param('id') id: string) {
     return this.directoresService.remove(+id);
   }
+
 }
