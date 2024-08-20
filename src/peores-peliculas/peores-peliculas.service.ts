@@ -54,9 +54,17 @@ export class PeoresPeliculasService {
 
   async update(id: number, updatePeoresPeliculaDto: UpdatePeoresPeliculaDto) {
     const pelicula = await this.worstMoviesRepository.findOne({ where: { id: id } });
+    const director = await this.directorRepository.findOne({ where: { id: updatePeoresPeliculaDto.directorId } });
     if (!pelicula) {
       throw new NotFoundException(`Peor Película with ID ${id} not found`);
     }
+
+    if (!director) {
+      throw new NotFoundException(`Director with ID ${updatePeoresPeliculaDto.directorId} not found`);
+    }
+
+    // Asignar el director a la película
+    pelicula.director = director;
 
     Object.assign(pelicula, updatePeoresPeliculaDto);
 

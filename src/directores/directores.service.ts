@@ -38,7 +38,7 @@ export class DirectoresService {
   }
 
   async findOne(id: number) {
-    return await this.directorRepository.findOne({ where: { id } });
+    return await this.directorRepository.findOne({ where: { id }, relations: ['peoresPeliculas'] });
   }
 
   async update(id: number, updateDirectorDto: UpdateDirectoreDto) {
